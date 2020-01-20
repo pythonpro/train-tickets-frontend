@@ -1,26 +1,47 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import SearchTrainForm from "./components/trains-search-form"
+import TrainsList from "./components/trains-list";
+import CarriagesList from "./components/carriages-list"
+import SeatsList from "./components/seats-list";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+class App extends React.Component {
+  state = {
+    search: null,
+    train: null,
+    carriage: null
+  };
+
+  saveSearch = search => {
+    this.setState({search: search});
+  };
+
+  saveTrain = train => {
+    this.setState({train: train});
+  };
+
+  saveCarriage = carriage => {
+    this.setState({carriage: carriage});
+  };
+
+  render() {
+    return (
+        <div className="App">
+          <h1>Train Tickets</h1>
+          {this.state.search ?
+              this.state.train ?
+                  this.state.carriage ?
+                      <SeatsList chosenCarriage={this.state.carriage} saveCarriage={this.saveCarriage}/>
+                      : <CarriagesList chosenTrain={this.state.train} saveTrain={this.saveTrain}
+                                       saveCarriage={this.saveCarriage}/>
+                  : <TrainsList searchParams={this.state.search} saveSearch={this.saveSearch}
+                                saveTrain={this.saveTrain}/>
+
+              : <SearchTrainForm saveSearch={this.saveSearch}/>}
+        </div>
+    );
+  }
 }
 
 export default App;
